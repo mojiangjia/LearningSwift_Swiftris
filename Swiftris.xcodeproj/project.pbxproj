@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E91E3DCB1ED8536400576165 /* LShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91E3DCA1ED8536400576165 /* LShape.swift */; };
 		E990266A1ED7B64C00FA7D95 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99026691ED7B64C00FA7D95 /* AppDelegate.swift */; };
 		E990266E1ED7B64C00FA7D95 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = E990266D1ED7B64C00FA7D95 /* Actions.sks */; };
 		E99026701ED7B64C00FA7D95 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E990266F1ED7B64C00FA7D95 /* GameScene.swift */; };
@@ -48,6 +49,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E91E3DCA1ED8536400576165 /* LShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LShape.swift; sourceTree = "<group>"; };
 		E99026661ED7B64C00FA7D95 /* Swiftris.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swiftris.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E99026691ED7B64C00FA7D95 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E990266D1ED7B64C00FA7D95 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 				E99026EE1ED8181E00FA7D95 /* Block.swift */,
 				E99026F01ED81F8E00FA7D95 /* Shape.swift */,
 				E99026F61ED82FB600FA7D95 /* LineShape.swift */,
+				E91E3DCA1ED8536400576165 /* LShape.swift */,
 				E99026F21ED829E300FA7D95 /* SquareShape.swift */,
 				E99026F41ED82B5C00FA7D95 /* TShape.swift */,
 				E99026EC1ED7C05000FA7D95 /* Array2D.swift */,
@@ -316,6 +319,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E91E3DCB1ED8536400576165 /* LShape.swift in Sources */,
 				E99026F31ED829E300FA7D95 /* SquareShape.swift in Sources */,
 				E99026701ED7B64C00FA7D95 /* GameScene.swift in Sources */,
 				E99026F11ED81F8E00FA7D95 /* Shape.swift in Sources */,
@@ -569,6 +573,7 @@
 				E99026961ED7B64C00FA7D95 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E99026971ED7B64C00FA7D95 /* Build configuration list for PBXNativeTarget "SwiftrisTests" */ = {
 			isa = XCConfigurationList;
@@ -577,6 +582,7 @@
 				E99026991ED7B64C00FA7D95 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E990269A1ED7B64C00FA7D95 /* Build configuration list for PBXNativeTarget "SwiftrisUITests" */ = {
 			isa = XCConfigurationList;
@@ -585,6 +591,7 @@
 				E990269C1ED7B64C00FA7D95 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
