@@ -68,6 +68,7 @@ class Block: Hashable, CustomStringConvertible {
     }
     
     // It returns true if both Blocks are in the same location and of the same color. The Hashable protocol inherits from the Equatable protocol, which requires us to provide this operator.
+    // static?
     static func ==(lhs: Block, rhs: Block) -> Bool {
         return lhs.color.rawValue == rhs.color.rawValue && lhs.column == rhs.column && lhs.row == rhs.row
     }
