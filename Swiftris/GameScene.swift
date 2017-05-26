@@ -9,6 +9,7 @@
 import SpriteKit
 import GameplayKit
 
+// s or ms?
 let TickLengthLevelOne = TimeInterval(0.6)
 
 class GameScene: SKScene {
