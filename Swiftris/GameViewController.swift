@@ -10,10 +10,13 @@ import UIKit
 import SpriteKit
 import GameplayKit
 
-class GameViewController: UIViewController, SwiftrisDelegate {
+class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognizerDelegate {
     
     var scene: GameScene!
     var swiftris: Swiftris!
+    
+    // keep track of the last point on the screen at which a shape movement occurred or where a pan begins
+    var panPointReference: CGPoint?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,6 +54,33 @@ class GameViewController: UIViewController, SwiftrisDelegate {
 
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+    
+    @IBAction func didTap(_ sender: UITapGestureRecognizer) {
+        swiftris.rotateShape()
+    }
+  
+    /* Every time the user's finger moves more than 90% of BlockSize
+     points across the screen, we'll move the falling shape in the corresponding direction of the pan
+    */
+    
+    @IBAction func didPan(_ sender: UIPanGestureRecognizer) {
+        let currentPoint = sender.translation(in: self.view)
+        if let originalPoint = panPointReference {
+            
+            if abs(currentPoint.x - originalPoint.x) > (BlockSize * 0.9) {
+                // velocity gives direction
+                if sender.velocity(in: self.view).x > CGFloat(0) {
+                    swiftris.moveShapeRight()
+                    panPointReference = currentPoint
+                } else {
+                    swiftris.moveShapeLeft()
+                    panPointReference = currentPoint
+                }
+            }
+        } else if sender.state == .began {
+            panPointReference = currentPoint
+        }
     }
     
     // lower the falling shape by one row and then asks GameScene to redraw the shape at its new location
