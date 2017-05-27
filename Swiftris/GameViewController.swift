@@ -34,6 +34,8 @@ class GameViewController: UIViewController {
         // Present the scene
         skView.presentScene(scene)
         
+        // add nextShape to the game layer at the preview location
+        // Remember the closure completion
         scene.addPreviewShapeToScene(shape: swiftris.nextShape!) {
             self.swiftris.nextShape?.moveTo(column: StartingColumn, row: StartingRow)
             self.scene.movePreviewShape(shape: self.swiftris.nextShape!) {
