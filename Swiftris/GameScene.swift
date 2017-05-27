@@ -207,4 +207,65 @@ class GameScene: SKScene {
             }
         }
     }
+    
+    func animateCollapsingLines(linesToRemove: Array<Array<Block>>, fallenBlocks: Array<Array<Block>>, completion:@escaping () -> ()) {
+        // determine precisely how long we should wait before calling the completion closure
+        var longestDuration: TimeInterval = 0
+        
+        
+        for (columnIdx, column) in fallenBlocks.enumerated() {
+            for (blockIdx, block) in column.enumerated() {
+                // newPosition is the final position to settle
+                let newPosition = pointForColumn(column: block.column, row: block.row)
+                // original position: display position on the scence
+                let sprite = block.sprite!
+                
+                let delay = (TimeInterval(columnIdx) * 0.05) + (TimeInterval(blockIdx) * 0.05)
+                
+                let duration = TimeInterval(((sprite.position.y - newPosition.y) / BlockSize) * 0.1)
+                
+                let moveAction = SKAction.move(to: newPosition, duration: duration)
+                moveAction.timingMode = .easeOut
+                sprite.run(SKAction.sequence([SKAction.wait(forDuration: delay), moveAction]))
+                longestDuration = max(longestDuration, duration + delay)
+            }
+        }
+        
+        for rowToRemove in linesToRemove {
+            for block in rowToRemove {
+                let randomRadius = CGFloat(UInt(arc4random_uniform(400) + 100))
+                let goLeft = arc4random_uniform(100) % 2 == 0
+                
+                var point = pointForColumn(column: block.column, row: block.row)
+                
+                point = CGPoint(x: point.x + (goLeft ? -randomRadius : randomRadius), y: point.y)
+                
+                let randomDuration = TimeInterval(arc4random_uniform(2)) + 0.5
+                
+                var startAngle = CGFloat(Double.pi)
+                var endAngle = startAngle * 2
+                if goLeft {
+                    endAngle = startAngle
+                    startAngle = 0
+                }
+                
+                let archPath = UIBezierPath(arcCenter: point, radius: randomRadius, startAngle: startAngle, endAngle: endAngle, clockwise: goLeft)
+                
+                let archAction = SKAction.follow(archPath.cgPath, asOffset: false, orientToPath: true, duration: randomDuration)
+                
+                archAction.timingMode = .easeIn
+                
+                let sprite = block.sprite!
+                
+                /* place the block sprite above the others such that they animate above the other blocks 
+                and begin the sequence of actions which concludes with removing the sprite from the scene.*/
+                sprite.zPosition = 100
+                
+                sprite.run(SKAction.sequence([SKAction.group([archAction, SKAction.fadeOut(withDuration: TimeInterval(randomDuration))]), SKAction.removeFromParent()]))
+            }
+        }
+        
+        // run the completion action after a duration matching the time it will take to drop the last block to its new resting place
+        run(SKAction.wait(forDuration: longestDuration), completion: completion)
+    }
 }
