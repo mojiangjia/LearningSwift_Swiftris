@@ -77,6 +77,13 @@ class GameScene: SKScene {
         shapeLayer.position = LayerPosition
         shapeLayer.addChild(gameBoard)
         gameLayer.addChild(shapeLayer)
+        
+        // don't need to add Sounds/theme.mp3
+        run(SKAction.repeatForever(SKAction.playSoundFileNamed("theme.mp3", waitForCompletion: true)))
+    }
+    
+    func playSound(sound: String) {
+        run(SKAction.playSoundFileNamed(sound, waitForCompletion: false))
     }
     
 //    func touchDown(atPoint pos : CGPoint) {
