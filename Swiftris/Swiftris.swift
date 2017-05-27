@@ -252,6 +252,22 @@ class Swiftris {
         return (removedLines, fallenBlocks)
     }
     
+    func removeAllBlocks() -> Array<Array<Block>> {
+        var allBlocks = Array<Array<Block>>()
+        for row in 0..<NumRows {
+            var rowOfBlocks = Array<Block>()
+            for column in 0..<NumColumns {
+                guard let block = blockArray[column, row] else {
+                    continue
+                }
+                rowOfBlocks.append(block)
+                blockArray[column, row] = nil
+            }
+            allBlocks.append(rowOfBlocks)
+        }
+        return allBlocks
+    }
+    
     func endGame() {
         score = 0
         level = 1
