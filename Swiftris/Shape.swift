@@ -31,8 +31,8 @@ enum Orientation: Int, CustomStringConvertible {
         return Orientation(rawValue: Int(arc4random_uniform(NumOrientations)))!
     }
     
-    static func rotate(o: Orientation, clockWise: Bool) -> Orientation {
-        var rotated = o.rawValue + (clockWise ? 1 : -1)
+    static func rotate(orientation: Orientation, clockWise: Bool) -> Orientation {
+        var rotated = orientation.rawValue + (clockWise ? 1 : -1)
         
         if rotated > Orientation.TwoSeventy.rawValue {
             rotated = Orientation.Zero.rawValue
@@ -130,6 +130,18 @@ class Shape: Hashable, CustomStringConvertible {
     
     }
     
+    final func rotateClockwise() {
+        let newOrientation = Orientation.rotate(orientation: orientation, clockWise: true)
+        rotateBlocks(orientation: newOrientation)
+        orientation = newOrientation
+    }
+    
+    final func rotateCounterClockwise() {
+        let newOrientation = Orientation.rotate(orientation: orientation, clockWise: false)
+        rotateBlocks(orientation: newOrientation)
+        orientation = newOrientation
+    }
+    
     final func shiftBy(columns: Int, rows: Int) {
         self.column += columns
         self.row += rows
@@ -141,6 +153,18 @@ class Shape: Hashable, CustomStringConvertible {
     
     final func lowerShapeByOneRow() {
         shiftBy(columns: 0, rows: 1)
+    }
+    
+    final func raiseShapeByOneRow() {
+        shiftBy(columns: 0, rows: -1)
+    }
+    
+    final func shiftRightByOneColumn() {
+        shiftBy(columns: 1, rows: 0)
+    }
+    
+    final func shiftLeftByOneColumn() {
+        shiftBy(columns: -1, rows: 0)
     }
     
     final func moveTo(column: Int, row:Int) {
