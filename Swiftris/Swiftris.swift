@@ -15,6 +15,9 @@ let StartingRow = 0
 let PreviewColumn = 12
 let PreviewRow = 1
 
+let PointsPerLine = 10
+let LevelThreshold = 500
+
 protocol SwiftrisDelegate {
     // Invoked when the current round of Swiftris ends
     func gameDidEnd(swiftris: Swiftris)
@@ -94,6 +97,100 @@ class Swiftris {
             if block.column < 0 || block.column >= NumColumns || block.row < 0 || block.row >= NumRows {
                 return true
             } else if blockArray[block.column, block.row] != nil {
+                return true
+            }
+        }
+        return false
+    }
+    
+    // A convenient way to drop shape towards bottom if user's patience for the slow-moving Tetromino wears thin
+    func dropShape() {
+        guard let shape = fallingShape else {
+            return
+        }
+        while detectIllegalPlacement() == false {
+            shape.lowerShapeByOneRow()
+        }
+        shape.raiseShapeByOneRow()
+        delegate?.gameShapeDidDrop(swiftris: self)
+    }
+    
+    // Call once every tick, lower the shape by one row
+    func letShapeFall() {
+        guard let shape = fallingShape else {
+            return
+        }
+        shape.lowerShapeByOneRow()
+        if detectIllegalPlacement() {
+            shape.raiseShapeByOneRow()
+            if detectIllegalPlacement() {
+                endGame()
+            } else {
+                settleShape()
+            }
+        } else {
+            delegate?.gameShapeDidMove(swiftris: self)
+            if detectTouch() {
+                settleShape()
+            }
+        }
+    }
+    
+    // Only allows clockwise rotation
+    func rotateShape() {
+        guard let shape = fallingShape else {
+            return
+        }
+        shape.rotateClockwise()
+        guard detectIllegalPlacement() == false else {
+            // revert the clockwise rotation by counterclockwise rotation
+            shape.rotateCounterClockwise()
+            return
+        }
+        delegate?.gameShapeDidMove(swiftris: self)
+    }
+    
+    func moveShapeLeft() {
+        guard let shape = fallingShape else {
+            return
+        }
+        shape.shiftLeftByOneColumn()
+        guard detectIllegalPlacement() == false else {
+            shape.shiftRightByOneColumn()
+            return
+        }
+        delegate?.gameShapeDidMove(swiftris: self)
+    }
+    
+    func moveShapeRight() {
+        guard let shape = fallingShape else {
+            return
+        }
+        shape.shiftRightByOneColumn()
+        guard detectIllegalPlacement() == false else {
+            shape.shiftLeftByOneColumn()
+            return
+        }
+        delegate?.gameShapeDidMove(swiftris: self)
+    }
+    
+    func settleShape() {
+        guard let shape = fallingShape else {
+            return
+        }
+        for block in shape.blocks {
+            blockArray[block.column, block.row] = block
+        }
+        fallingShape = nil
+        delegate?.gameShapeDidLand(swiftris: self)
+    }
+    
+    func detectTouch() -> Bool {
+        guard let shape = fallingShape else {
+            return false
+        }
+        for bottomBlock in shape.bottomBlocks {
+            if bottomBlock.row == NumRows - 1 || blockArray[bottomBlock.column, bottomBlock.row + 1] != nil {
                 return true
             }
         }
